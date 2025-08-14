@@ -18,7 +18,6 @@
 
 ![Contributors](https://img.shields.io/github/contributors/yzaimoglu/elevenlabs-go?color=dark-green) ![Issues](https://img.shields.io/github/issues/yzaimoglu/elevenlabs-go) ![License](https://img.shields.io/github/license/yzaimoglu/elevenlabs-go) 
 
-# ElevenLabs Go Client
 A Go client for interacting with the [ElevenLabs API](https://api.elevenlabs.io/), providing easy-to-use methods for the endpoints for Administration, Conversational AI and advanced features like TTS, STT and other ElevenLabs features.
 
 ## Features
