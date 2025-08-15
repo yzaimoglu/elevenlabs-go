@@ -54,10 +54,14 @@ func NewClient(apiKey string, environment Environment, customClient ...*http.Cli
 	var httpClient *http.Client
 	if len(customClient) > 0 {
 		httpClient = customClient[0]
+	} else {
+		httpClient = http.DefaultClient
 	}
 
 	client := &Client{httpClient: httpClient}
 	client.headers = defaultHeaders
+	client.SetEnvironment(environment)
+	client.SetCredential(NewAuthCredential(apiKey))
 	return client, nil
 }
 
@@ -68,8 +72,8 @@ func (c *Client) SetHeader(key string, value string) {
 
 // SetEnvironment saves the environment in the client. It will be used
 // when the API is called
-func (c *Client) SetEnvironment(subdomain string) error {
-	baseURLString := fmt.Sprintf(baseURLFormat, subdomain)
+func (c *Client) SetEnvironment(environment Environment) error {
+	baseURLString := fmt.Sprintf(baseURLFormat, environment)
 	baseURL, err := url.Parse(baseURLString)
 	if err != nil {
 		return err
@@ -284,7 +288,7 @@ func addOptions(s string, opts interface{}) (string, error) {
 	return u.String(), nil
 }
 
-// getData is a generic helper function that retrieves and unmarshals JSON data from a specified URL.
+// parseResponse is a generic helper function that retrieves and unmarshals JSON data from a specified URL.
 // It takes four parameters:
 // - a pointer to a Client (c) which is used to execute the GET request,
 // - a context (ctx) for managing the request's lifecycle,
@@ -295,15 +299,8 @@ func addOptions(s string, opts interface{}) (string, error) {
 // the returned body in the form of a byte slice is unmarshalled into the provided empty interface using the json.Unmarshal function.
 //
 // If an error occurs during either the GET request or the JSON unmarshalling, the function will return this error.
-func getData(c *Client, ctx context.Context, url string, data any) error {
-	body, err := c.get(ctx, url)
-	if err == nil {
-		err = json.Unmarshal(body, data)
-		if err != nil {
-			return err
-		}
-	}
-	return err
+func (c *Client) parseResponse(res []byte, v any) error {
+	return json.Unmarshal(res, v)
 }
 
 // Get allows users to send requests not yet implemented

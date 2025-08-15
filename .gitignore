@@ -1,0 +1,96 @@
+# Logs
+*.log
+# Temporary files
+*.tmp
+*~
+
+*.bak
+# Environment files (containing secrets, API keys, credentials)
+.env
+*.env
+.env.*
+
+# Local configuration that shouldn't be shared
+*.local
+
+# go specific files
+
+*.exe
+*.test
+vendor/
+*.out
+go.work
+
+go.sum
+
+# Linux operating system specific files
+
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+.swap
+.swp
+.swo
+.swn
+.bash_history
+
+.cache/
+.config/
+.local/
+lost+found/
+.gvfs/
+
+.dbus/
+.thumbnails/
+.Xauthority
+.ICEauthority
+.recently-used
+
+*.tmp
+.pid
+.lock
+core
+core.*
+
+.saves-*
+.*.kate-swp
+
+# macOS operating system specific files
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+
+Temporary Items
+.apdisk
+*.icloud
+.AppleDB/
+.AppleDesktop/
+
+*.AppleDouble
+*.AppleDB
+.Spotlight-V100/
+.Trashes/
+*.swp
+
+Network Trash Folder/
+.DS_Store?
+.Spotlight-V100
+.Trashes
