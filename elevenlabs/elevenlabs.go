@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/google/go-querystring/query"
 )
 
 const (
@@ -270,22 +268,6 @@ func (c *Client) includeHeaders(req *http.Request) {
 	for key, value := range c.headers {
 		req.Header.Set(key, value)
 	}
-}
-
-// addOptions build query string
-func addOptions(s string, opts interface{}) (string, error) {
-	u, err := url.Parse(s)
-	if err != nil {
-		return s, err
-	}
-
-	qs, err := query.Values(opts)
-	if err != nil {
-		return s, err
-	}
-
-	u.RawQuery = qs.Encode()
-	return u.String(), nil
 }
 
 // parseResponse is a generic helper function that retrieves and unmarshals JSON data from a specified URL.

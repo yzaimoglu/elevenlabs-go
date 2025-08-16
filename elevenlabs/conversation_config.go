@@ -84,7 +84,7 @@ const (
 type ConversationConfigAgentPromptBuiltInTools struct {
 	EndCall             *ConversationConfigAgentPromptBuiltInTool `json:"end_call,omitempty"`
 	LanguageDetection   *ConversationConfigAgentPromptBuiltInTool `json:"language_detection,omitempty"`
-	TransferToAgent     *ConversationConfigAgentPromptBuiltInTool `json:"transfer_to_agent,omitempt"`
+	TransferToAgent     *ConversationConfigAgentPromptBuiltInTool `json:"transfer_to_agent,omitempty"`
 	TransferToNumber    *ConversationConfigAgentPromptBuiltInTool `json:"transfer_to_number,omitempty"`
 	SkipTurn            *ConversationConfigAgentPromptBuiltInTool `json:"skip_turn,omitempty"`
 	PlayKeypadTouchTone *ConversationConfigAgentPromptBuiltInTool `json:"play_keypad_touch_tone,omitempty"`
