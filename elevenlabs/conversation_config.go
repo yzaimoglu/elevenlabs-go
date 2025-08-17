@@ -10,29 +10,29 @@ type ConversationConfig struct {
 }
 
 type ConversationConfigAgent struct {
-	FirstMessage     *string                                  `json:"first_message,omitempty"`
-	Language         *string                                  `json:"language,omitempty"`
-	DynamicVariables *ConversationConfigAgentDynamicVariables `json:"dynamic_variables,omitempty"`
-	Prompt           *ConversationConfigAgentPrompt           `json:"prompt,omitempty"`
+	FirstMessage     *string                `json:"first_message,omitempty"`
+	Language         *string                `json:"language,omitempty"`
+	DynamicVariables *AgentDynamicVariables `json:"dynamic_variables,omitempty"`
+	Prompt           *AgentPrompt           `json:"prompt,omitempty"`
 }
 
-type ConversationConfigAgentPrompt struct {
-	Prompt                   *string                                      `json:"prompt"`
-	LLM                      *ConversationConfigAgentPromptLLM            `json:"llm,omitempty"`
-	Temperature              *float32                                     `json:"temperature,omitempty"`
-	MaxTokens                *int                                         `json:"max_tokens,omitempty"`
-	ToolIds                  []string                                     `json:"tool_ids,omitempty"`
-	BuiltInTools             *ConversationConfigAgentPromptBuiltInTools   `json:"built_in_tools,omitempty"`
-	MCPServerIds             []string                                     `json:"mcp_server_ids,omitempty"`
-	NativeMCPServerIds       []string                                     `json:"native_mcp_server_ids,omitempty"`
-	KnowledgeBase            []ConversationConfigAgentPromptKnowledgeBase `json:"knowledge_base,omitempty"`
-	CustomLLM                *ConversationConfigAgentPromptCustomLLM      `json:"custom_llm,omitempty"`
-	IgnoreDefaultPersonality *bool                                        `json:"ignore_default_personality,omitempty"`
-	RAG                      *ConversationConfigAgentPromptRAG            `json:"rag,omitempty"`
-	Timezone                 *string                                      `json:"timezone,omitempty"`
+type AgentPrompt struct {
+	Prompt                   *string                    `json:"prompt"`
+	LLM                      *AgentPromptLLM            `json:"llm,omitempty"`
+	Temperature              *float32                   `json:"temperature,omitempty"`
+	MaxTokens                *int                       `json:"max_tokens,omitempty"`
+	ToolIds                  []string                   `json:"tool_ids,omitempty"`
+	BuiltInTools             *AgentPromptBuiltInTools   `json:"built_in_tools,omitempty"`
+	MCPServerIds             []string                   `json:"mcp_server_ids,omitempty"`
+	NativeMCPServerIds       []string                   `json:"native_mcp_server_ids,omitempty"`
+	KnowledgeBase            []AgentPromptKnowledgeBase `json:"knowledge_base,omitempty"`
+	CustomLLM                *AgentPromptCustomLLM      `json:"custom_llm,omitempty"`
+	IgnoreDefaultPersonality *bool                      `json:"ignore_default_personality,omitempty"`
+	RAG                      *AgentPromptRAG            `json:"rag,omitempty"`
+	Timezone                 *string                    `json:"timezone,omitempty"`
 }
 
-type ConversationConfigAgentPromptRAG struct {
+type AgentPromptRAG struct {
 	Enabled                    *bool              `json:"enabled,omitempty"`
 	EmbeddingModel             *RAGEmbeddingModel `json:"embedding_model,omitempty"`
 	MaxVectorDistance          *float32           `json:"max_vector_distance,omitempty"`
@@ -47,7 +47,7 @@ const (
 	RAGEmbeddingModelMultilingualE5 RAGEmbeddingModel = "multilingual_e5_large_instruct"
 )
 
-type ConversationConfigAgentPromptCustomLLM struct {
+type AgentPromptCustomLLM struct {
 	URL            string         `json:"url"`
 	ModelID        *string        `json:"model_id,omitempty"`
 	APIKey         *APIKey        `json:"api_key"`
@@ -59,50 +59,50 @@ type APIKey struct {
 	SecretID string `json:"secret_id"`
 }
 
-type ConversationConfigAgentPromptKnowledgeBase struct {
-	Type      ConversationConfigAgentPromptKnowledgeBaseType       `json:"type"`
-	Name      string                                               `json:"name"`
-	ID        string                                               `json:"id"`
-	UsageMode *ConversationConfigAgentPromptKnowledgeBaseUsageMode `json:"usage_mode,omitempty"`
+type AgentPromptKnowledgeBase struct {
+	Type      AgentPromptKnowledgeBaseType       `json:"type"`
+	Name      string                             `json:"name"`
+	ID        string                             `json:"id"`
+	UsageMode *AgentPromptKnowledgeBaseUsageMode `json:"usage_mode,omitempty"`
 }
 
-type ConversationConfigAgentPromptKnowledgeBaseType string
+type AgentPromptKnowledgeBaseType string
 
 const (
-	KnowledgeBaseTypeFile ConversationConfigAgentPromptKnowledgeBaseType = "file"
-	KnowledgeBaseTypeUrl  ConversationConfigAgentPromptKnowledgeBaseType = "url"
-	KnowledgeBaseTypeText ConversationConfigAgentPromptKnowledgeBaseType = "text"
+	KnowledgeBaseTypeFile AgentPromptKnowledgeBaseType = "file"
+	KnowledgeBaseTypeUrl  AgentPromptKnowledgeBaseType = "url"
+	KnowledgeBaseTypeText AgentPromptKnowledgeBaseType = "text"
 )
 
-type ConversationConfigAgentPromptKnowledgeBaseUsageMode string
+type AgentPromptKnowledgeBaseUsageMode string
 
 const (
-	KnowledgeBaseUsageModePrompt ConversationConfigAgentPromptKnowledgeBaseUsageMode = "prompt"
-	KnowledgeBaseUsageModeAuto   ConversationConfigAgentPromptKnowledgeBaseUsageMode = "auto"
+	KnowledgeBaseUsageModePrompt AgentPromptKnowledgeBaseUsageMode = "prompt"
+	KnowledgeBaseUsageModeAuto   AgentPromptKnowledgeBaseUsageMode = "auto"
 )
 
-type ConversationConfigAgentPromptBuiltInTools struct {
-	EndCall             *ConversationConfigAgentPromptBuiltInTool `json:"end_call,omitempty"`
-	LanguageDetection   *ConversationConfigAgentPromptBuiltInTool `json:"language_detection,omitempty"`
-	TransferToAgent     *ConversationConfigAgentPromptBuiltInTool `json:"transfer_to_agent,omitempty"`
-	TransferToNumber    *ConversationConfigAgentPromptBuiltInTool `json:"transfer_to_number,omitempty"`
-	SkipTurn            *ConversationConfigAgentPromptBuiltInTool `json:"skip_turn,omitempty"`
-	PlayKeypadTouchTone *ConversationConfigAgentPromptBuiltInTool `json:"play_keypad_touch_tone,omitempty"`
-	VoicemailDetection  *ConversationConfigAgentPromptBuiltInTool `json:"voicemail_detection,omitempty"`
+type AgentPromptBuiltInTools struct {
+	EndCall             *AgentPromptBuiltInTool `json:"end_call,omitempty"`
+	LanguageDetection   *AgentPromptBuiltInTool `json:"language_detection,omitempty"`
+	TransferToAgent     *AgentPromptBuiltInTool `json:"transfer_to_agent,omitempty"`
+	TransferToNumber    *AgentPromptBuiltInTool `json:"transfer_to_number,omitempty"`
+	SkipTurn            *AgentPromptBuiltInTool `json:"skip_turn,omitempty"`
+	PlayKeypadTouchTone *AgentPromptBuiltInTool `json:"play_keypad_touch_tone,omitempty"`
+	VoicemailDetection  *AgentPromptBuiltInTool `json:"voicemail_detection,omitempty"`
 }
 
-type ConversationConfigAgentPromptBuiltInTool struct {
-	Name                 string                                               `json:"name"`
-	Description          string                                               `json:"description"`
-	Params               ConversationConfigAgentPromptBuiltInToolParams       `json:"params"`
-	ResponseTimeoutSecs  *int                                                 `json:"response_timeout_secs,omitempty"`
-	DisableInterruptions *bool                                                `json:"disable_interruptions,omitempty"`
-	ForcePreToolSpeech   *bool                                                `json:"force_pre_tool_speech,omitempty"`
-	Assignments          []ConversationConfigAgentPromptBuiltInToolAssignment `json:"assignments,omitempty"`
-	Type                 *ConversationConfigAgentPromptBuiltInToolType        `json:"type,omitempty"`
+type AgentPromptBuiltInTool struct {
+	Name                 string                             `json:"name"`
+	Description          string                             `json:"description"`
+	Params               AgentPromptBuiltInToolParams       `json:"params"`
+	ResponseTimeoutSecs  *int                               `json:"response_timeout_secs,omitempty"`
+	DisableInterruptions *bool                              `json:"disable_interruptions,omitempty"`
+	ForcePreToolSpeech   *bool                              `json:"force_pre_tool_speech,omitempty"`
+	Assignments          []AgentPromptBuiltInToolAssignment `json:"assignments,omitempty"`
+	Type                 *AgentPromptBuiltInToolType        `json:"type,omitempty"`
 }
 
-type ConversationConfigAgentPromptBuiltInToolParams struct {
+type AgentPromptBuiltInToolParams struct {
 	EndCallToolConfig            BuiltInToolParamsEndCallToolConfig            `json:"EndCallToolConfig"`
 	LanguageDetectionToolConfig  BuiltInToolParamsLanguageDetectionToolConfig  `json:"LanguageDetectionToolConfig"`
 	TransferToAgentToolConfig    BuiltInToolParamsTransferToAgentToolConfig    `json:"TransferToAgentToolConfig"`
@@ -204,7 +204,7 @@ const (
 	SystemToolTypeVoicemailDetection PromptBuiltInSystemToolType = "voicemail_detection"
 )
 
-type ConversationConfigAgentPromptBuiltInToolAssignment struct {
+type AgentPromptBuiltInToolAssignment struct {
 	DynamicVariable string                                                    `json:"dynamic_variable"`
 	ValuePath       string                                                    `json:"value_path"`
 	Source          *ConversationConfigAgentPromptBuiltInToolAssignmentSource `json:"source"`
@@ -216,77 +216,77 @@ const (
 	SourceTypeResponse ConversationConfigAgentPromptBuiltInToolAssignmentSource = "response"
 )
 
-type ConversationConfigAgentPromptBuiltInToolType string
+type AgentPromptBuiltInToolType string
 
 const (
-	ToolTypeSystem ConversationConfigAgentPromptBuiltInToolType = "system"
+	ToolTypeSystem AgentPromptBuiltInToolType = "system"
 )
 
-type ConversationConfigAgentPromptLLM string
+type AgentPromptLLM string
 
 const (
-	GPT4oMini         ConversationConfigAgentPromptLLM = "gpt-4o-mini"
-	GPT4o             ConversationConfigAgentPromptLLM = "gpt-4o"
-	GPT4              ConversationConfigAgentPromptLLM = "gpt-4"
-	GPT4Turbo         ConversationConfigAgentPromptLLM = "gpt-4-turbo"
-	GPT41             ConversationConfigAgentPromptLLM = "gpt-4.1"
-	GPT41Mini         ConversationConfigAgentPromptLLM = "gpt-4.1-mini"
-	GPT41Nano         ConversationConfigAgentPromptLLM = "gpt-4.1-nano"
-	GPT5              ConversationConfigAgentPromptLLM = "gpt-5"
-	GPT5Mini          ConversationConfigAgentPromptLLM = "gpt-5-mini"
-	GPT5Nano          ConversationConfigAgentPromptLLM = "gpt-5-nano"
-	GPT35Turbo        ConversationConfigAgentPromptLLM = "gpt-3.5-turbo"
-	Gemini15Pro       ConversationConfigAgentPromptLLM = "gemini-1.5-pro"
-	Gemini15Flash     ConversationConfigAgentPromptLLM = "gemini-1.5-flash"
-	Gemini20Flash     ConversationConfigAgentPromptLLM = "gemini-2.0-flash"
-	Gemini20FlashLite ConversationConfigAgentPromptLLM = "gemini-2.0-flash-lite"
-	Gemini25FlashLite ConversationConfigAgentPromptLLM = "gemini-2.5-flash-lite"
-	Gemini25Flash     ConversationConfigAgentPromptLLM = "gemini-2.5-flash"
-	ClaudeSonnet4     ConversationConfigAgentPromptLLM = "claude-sonnet-4"
-	Claude37Sonnet    ConversationConfigAgentPromptLLM = "claude-3-7-sonnet"
-	Claude35Sonnet    ConversationConfigAgentPromptLLM = "claude-3-5-sonnet"
-	Claude35SonnetV1  ConversationConfigAgentPromptLLM = "claude-3-5-sonnet-v1"
-	Claude3Haiku      ConversationConfigAgentPromptLLM = "claude-3-haiku"
-	GrokBeta          ConversationConfigAgentPromptLLM = "grok-beta"
-	CustomLLM         ConversationConfigAgentPromptLLM = "custom-llm"
-	Qwen34B           ConversationConfigAgentPromptLLM = "qwen3-4b"
-	Qwen330BA3B       ConversationConfigAgentPromptLLM = "qwen3-30b-a3b"
-	WattTool8B        ConversationConfigAgentPromptLLM = "watt-tool-8b"
-	WattTool70B       ConversationConfigAgentPromptLLM = "watt-tool-70b"
+	GPT4oMini         AgentPromptLLM = "gpt-4o-mini"
+	GPT4o             AgentPromptLLM = "gpt-4o"
+	GPT4              AgentPromptLLM = "gpt-4"
+	GPT4Turbo         AgentPromptLLM = "gpt-4-turbo"
+	GPT41             AgentPromptLLM = "gpt-4.1"
+	GPT41Mini         AgentPromptLLM = "gpt-4.1-mini"
+	GPT41Nano         AgentPromptLLM = "gpt-4.1-nano"
+	GPT5              AgentPromptLLM = "gpt-5"
+	GPT5Mini          AgentPromptLLM = "gpt-5-mini"
+	GPT5Nano          AgentPromptLLM = "gpt-5-nano"
+	GPT35Turbo        AgentPromptLLM = "gpt-3.5-turbo"
+	Gemini15Pro       AgentPromptLLM = "gemini-1.5-pro"
+	Gemini15Flash     AgentPromptLLM = "gemini-1.5-flash"
+	Gemini20Flash     AgentPromptLLM = "gemini-2.0-flash"
+	Gemini20FlashLite AgentPromptLLM = "gemini-2.0-flash-lite"
+	Gemini25FlashLite AgentPromptLLM = "gemini-2.5-flash-lite"
+	Gemini25Flash     AgentPromptLLM = "gemini-2.5-flash"
+	ClaudeSonnet4     AgentPromptLLM = "claude-sonnet-4"
+	Claude37Sonnet    AgentPromptLLM = "claude-3-7-sonnet"
+	Claude35Sonnet    AgentPromptLLM = "claude-3-5-sonnet"
+	Claude35SonnetV1  AgentPromptLLM = "claude-3-5-sonnet-v1"
+	Claude3Haiku      AgentPromptLLM = "claude-3-haiku"
+	GrokBeta          AgentPromptLLM = "grok-beta"
+	CustomLLM         AgentPromptLLM = "custom-llm"
+	Qwen34B           AgentPromptLLM = "qwen3-4b"
+	Qwen330BA3B       AgentPromptLLM = "qwen3-30b-a3b"
+	WattTool8B        AgentPromptLLM = "watt-tool-8b"
+	WattTool70B       AgentPromptLLM = "watt-tool-70b"
 
 	// dated variants
-	Gemini25FlashPreview0520     ConversationConfigAgentPromptLLM = "gemini-2.5-flash-preview-05-20"
-	Gemini25FlashPreview0417     ConversationConfigAgentPromptLLM = "gemini-2.5-flash-preview-04-17"
-	Gemini25FlashLitePreview0617 ConversationConfigAgentPromptLLM = "gemini-2.5-flash-lite-preview-06-17"
-	Gemini20FlashLite001         ConversationConfigAgentPromptLLM = "gemini-2.0-flash-lite-001"
-	Gemini20Flash001             ConversationConfigAgentPromptLLM = "gemini-2.0-flash-001"
-	Gemini15Flash002             ConversationConfigAgentPromptLLM = "gemini-1.5-flash-002"
-	Gemini15Flash001             ConversationConfigAgentPromptLLM = "gemini-1.5-flash-001"
-	Gemini15Pro002               ConversationConfigAgentPromptLLM = "gemini-1.5-pro-002"
-	Gemini15Pro001               ConversationConfigAgentPromptLLM = "gemini-1.5-pro-001"
-	ClaudeSonnet4_20250514       ConversationConfigAgentPromptLLM = "claude-sonnet-4@20250514"
-	Claude37Sonnet_20250219      ConversationConfigAgentPromptLLM = "claude-3-7-sonnet@20250219"
-	Claude35Sonnet_20240620      ConversationConfigAgentPromptLLM = "claude-3-5-sonnet@20240620"
-	Claude35SonnetV2_20241022    ConversationConfigAgentPromptLLM = "claude-3-5-sonnet-v2@20241022"
-	Claude3Haiku_20240307        ConversationConfigAgentPromptLLM = "claude-3-haiku@20240307"
-	GPT5_20250807                ConversationConfigAgentPromptLLM = "gpt-5-2025-08-07"
-	GPT5Mini_20250807            ConversationConfigAgentPromptLLM = "gpt-5-mini-2025-08-07"
-	GPT5Nano_20250807            ConversationConfigAgentPromptLLM = "gpt-5-nano-2025-08-07"
-	GPT41_20250414               ConversationConfigAgentPromptLLM = "gpt-4.1-2025-04-14"
-	GPT41Mini_20250414           ConversationConfigAgentPromptLLM = "gpt-4.1-mini-2025-04-14"
-	GPT41Nano_20250414           ConversationConfigAgentPromptLLM = "gpt-4.1-nano-2025-04-14"
-	GPT4oMini_20240718           ConversationConfigAgentPromptLLM = "gpt-4o-mini-2024-07-18"
-	GPT4o_20241120               ConversationConfigAgentPromptLLM = "gpt-4o-2024-11-20"
-	GPT4o_20240806               ConversationConfigAgentPromptLLM = "gpt-4o-2024-08-06"
-	GPT4o_20240513               ConversationConfigAgentPromptLLM = "gpt-4o-2024-05-13"
-	GPT40613                     ConversationConfigAgentPromptLLM = "gpt-4-0613"
-	GPT40314                     ConversationConfigAgentPromptLLM = "gpt-4-0314"
-	GPT4Turbo_20240409           ConversationConfigAgentPromptLLM = "gpt-4-turbo-2024-04-09"
-	GPT35Turbo_0125              ConversationConfigAgentPromptLLM = "gpt-3.5-turbo-0125"
-	GPT35Turbo_1106              ConversationConfigAgentPromptLLM = "gpt-3.5-turbo-1106"
+	Gemini25FlashPreview0520     AgentPromptLLM = "gemini-2.5-flash-preview-05-20"
+	Gemini25FlashPreview0417     AgentPromptLLM = "gemini-2.5-flash-preview-04-17"
+	Gemini25FlashLitePreview0617 AgentPromptLLM = "gemini-2.5-flash-lite-preview-06-17"
+	Gemini20FlashLite001         AgentPromptLLM = "gemini-2.0-flash-lite-001"
+	Gemini20Flash001             AgentPromptLLM = "gemini-2.0-flash-001"
+	Gemini15Flash002             AgentPromptLLM = "gemini-1.5-flash-002"
+	Gemini15Flash001             AgentPromptLLM = "gemini-1.5-flash-001"
+	Gemini15Pro002               AgentPromptLLM = "gemini-1.5-pro-002"
+	Gemini15Pro001               AgentPromptLLM = "gemini-1.5-pro-001"
+	ClaudeSonnet4_20250514       AgentPromptLLM = "claude-sonnet-4@20250514"
+	Claude37Sonnet_20250219      AgentPromptLLM = "claude-3-7-sonnet@20250219"
+	Claude35Sonnet_20240620      AgentPromptLLM = "claude-3-5-sonnet@20240620"
+	Claude35SonnetV2_20241022    AgentPromptLLM = "claude-3-5-sonnet-v2@20241022"
+	Claude3Haiku_20240307        AgentPromptLLM = "claude-3-haiku@20240307"
+	GPT5_20250807                AgentPromptLLM = "gpt-5-2025-08-07"
+	GPT5Mini_20250807            AgentPromptLLM = "gpt-5-mini-2025-08-07"
+	GPT5Nano_20250807            AgentPromptLLM = "gpt-5-nano-2025-08-07"
+	GPT41_20250414               AgentPromptLLM = "gpt-4.1-2025-04-14"
+	GPT41Mini_20250414           AgentPromptLLM = "gpt-4.1-mini-2025-04-14"
+	GPT41Nano_20250414           AgentPromptLLM = "gpt-4.1-nano-2025-04-14"
+	GPT4oMini_20240718           AgentPromptLLM = "gpt-4o-mini-2024-07-18"
+	GPT4o_20241120               AgentPromptLLM = "gpt-4o-2024-11-20"
+	GPT4o_20240806               AgentPromptLLM = "gpt-4o-2024-08-06"
+	GPT4o_20240513               AgentPromptLLM = "gpt-4o-2024-05-13"
+	GPT40613                     AgentPromptLLM = "gpt-4-0613"
+	GPT40314                     AgentPromptLLM = "gpt-4-0314"
+	GPT4Turbo_20240409           AgentPromptLLM = "gpt-4-turbo-2024-04-09"
+	GPT35Turbo_0125              AgentPromptLLM = "gpt-3.5-turbo-0125"
+	GPT35Turbo_1106              AgentPromptLLM = "gpt-3.5-turbo-1106"
 )
 
-type ConversationConfigAgentDynamicVariables struct {
+type AgentDynamicVariables struct {
 	DynamicVariablePlaceholders map[string]any `json:"dynamic_variable_placeholders,omitempty"`
 }
 

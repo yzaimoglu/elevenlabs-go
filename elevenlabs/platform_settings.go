@@ -1,16 +1,16 @@
 package elevenlabs
 
 type PlatformSettings struct {
-	Auth               *PlatformSettingsAuth                     `json:"auth,omitempty"`
-	Evaluation         *PlatformSettingsEvaluation               `json:"evaluation,omitempty"`
-	Widget             *PlatformSettingsWidget                   `json:"widget,omitempty"`
-	DataCollection     map[string]PlatformSettingsDataCollection `json:"data_collection,omitempty"`
-	Overrides          *PlatformSettingsOverrides                `json:"overrides,omitempty"`
-	CallLimits         *PlatformSettingsCallLimits               `json:"call_limits,omitempty"`
-	Privacy            *PlatformSettingsPrivacy                  `json:"privacy,omitempty"`
-	WorkspaceOverrides *PlatformSettingsWorkspaceOverrides       `json:"workspace_overrides,omitempty"`
-	Testing            *PlatformSettingsTesting                  `json:"testing,omitempty"`
-	Safety             *PlatformSettingsSafety                   `json:"safety,omitempty"`
+	Auth               *PlatformSettingsAuth               `json:"auth,omitempty"`
+	Evaluation         *PlatformSettingsEvaluation         `json:"evaluation,omitempty"`
+	Widget             *PlatformSettingsWidget             `json:"widget,omitempty"`
+	DataCollection     map[string]DataCollectionSchema     `json:"data_collection,omitempty"`
+	Overrides          *PlatformSettingsOverrides          `json:"overrides,omitempty"`
+	CallLimits         *PlatformSettingsCallLimits         `json:"call_limits,omitempty"`
+	Privacy            *PlatformSettingsPrivacy            `json:"privacy,omitempty"`
+	WorkspaceOverrides *PlatformSettingsWorkspaceOverrides `json:"workspace_overrides,omitempty"`
+	Testing            *PlatformSettingsTesting            `json:"testing,omitempty"`
+	Safety             *PlatformSettingsSafety             `json:"safety,omitempty"`
 }
 
 type PlatformSettingsAuth struct {
@@ -210,21 +210,21 @@ type PlatformSettingsWidgetStyles struct {
 	DropdownSheetRadius *float32 `json:"dropdown_sheet_radius,omitempty"`
 }
 
-type PlatformSettingsDataCollection struct {
-	Type            PlatformSettingsDataCollectionType `json:"type"`
-	Description     *string                            `json:"description,omitempty"`
-	DynamicVariable *string                            `json:"dynamic_variable,omitempty"`
+type DataCollectionSchema struct {
+	Type            DataCollectionType `json:"type"`
+	Description     *string            `json:"description,omitempty"`
+	DynamicVariable *string            `json:"dynamic_variable,omitempty"`
 	// string or integer or double or boolean or null
 	ConstantValue any `json:"constant_value,omitempty"`
 }
 
-type PlatformSettingsDataCollectionType string
+type DataCollectionType string
 
 const (
-	PlatformSettingsDataCollectionTypeBoolean PlatformSettingsDataCollectionType = "boolean"
-	PlatformSettingsDataCollectionTypeNumber  PlatformSettingsDataCollectionType = "number"
-	PlatformSettingsDataCollectionTypeString  PlatformSettingsDataCollectionType = "string"
-	PlatformSettingsDataCollectionTypeInteger PlatformSettingsDataCollectionType = "integer"
+	DataCollectionTypeBoolean DataCollectionType = "boolean"
+	DataCollectionTypeNumber  DataCollectionType = "number"
+	DataCollectionTypeString  DataCollectionType = "string"
+	DataCollectionTypeInteger DataCollectionType = "integer"
 )
 
 type PlatformSettingsOverrides struct {

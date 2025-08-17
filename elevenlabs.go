@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/k0kubun/pp/v3"
 	"github.com/yzaimoglu/elevenlabs-go/elevenlabs"
 )
 
@@ -20,22 +19,12 @@ func main() {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	// Use a method that calls the API (Listing all Conversational AI agents here)
-	agents, err := client.ListAgents(context.Background(),
-		elevenlabs.NewListAgentsReq(nil, elevenlabs.Ptr(2), nil))
-	if err != nil {
-		log.Fatalf("Error fetching agents: %v", err)
-	}
-	pp.Println(agents)
+	ids := []string{"agent_0401k2wv75h5envs8g9yf9g6b9vg", "agent_7201k2wv32eaejzsmgtgkhh8sezz", "agent_8301k2wtznwmentrdxx8m5hcbrh1"}
 
-	// Check whether there are more agents to fetch, if so fetch them using the cursor
-	if agents.HasMore {
-		nextAgents, err := client.ListAgents(context.Background(),
-			elevenlabs.NewListAgentsReq(agents.NextCursor, elevenlabs.Ptr(2), nil))
-		if err != nil {
-			log.Fatalf("Error fetching next agents: %v", err)
-
+	for _, id := range ids {
+		if err := client.DeleteAgent(context.Background(), elevenlabs.NewDeleteAgentReq(id)); err != nil {
+			log.Printf("Failed to delete agent %s: %v", id, err)
 		}
-		pp.Println(nextAgents)
+		log.Printf("Successfully deleted agent %s", id)
 	}
 }

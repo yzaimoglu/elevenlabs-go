@@ -24,6 +24,7 @@ A Go client for interacting with the [ElevenLabs API](https://api.elevenlabs.io/
 This project is currently work in progress and not all of the endpoints are supported.
 - [ ] **Administration**
 - [ ] **Conversational AI**
+  - [X] Agents
 - [ ] **Text to Speech**
 - [ ] **Speech to Text**
 - [ ] **Text to Dialogue**
