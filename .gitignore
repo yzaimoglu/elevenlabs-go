@@ -13,6 +13,9 @@
 # Local configuration that shouldn't be shared
 *.local
 
+# ai generated files
+.claude
+
 # go specific files
 
 *.exe

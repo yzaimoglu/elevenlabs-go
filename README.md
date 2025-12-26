@@ -22,20 +22,58 @@ A Go client for interacting with the [ElevenLabs API](https://api.elevenlabs.io/
 
 ## Features
 This project is currently work in progress and not all of the endpoints are supported.
-- [ ] **Administration**
-- [ ] **Conversational AI**
-  - [X] Agents
-- [ ] **Text to Speech**
-- [ ] **Speech to Text**
-- [ ] **Text to Dialogue**
-- [ ] **Voice Changer**
-- [ ] **Sound Effects**
-- [ ] **Audio Isolation**
-- [ ] **Text to Voice**
-- [ ] **Dubbing**
-- [ ] **Audio Native**
-- [ ] **Voices**
-- [ ] **Forced Alignment**
+
+### Conversational AI - Agents
+- [X] Create Agent (POST /v1/convai/agents/create)
+- [X] List Agents (GET /v1/convai/agents)
+- [X] Get Agent (GET /v1/convai/agents/{agent_id})
+- [X] Update Agent (PATCH /v1/convai/agents/{agent_id})
+- [X] Delete Agent (DELETE /v1/convai/agents/{agent_id})
+- [X] Duplicate Agent (POST /v1/convai/agents/{agent_id}/duplicate)
+- [X] Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate)
+- [X] Stream Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate-conversation/stream)
+- [X] Get Agent Dependent Agents (GET /v1/convai/agents/{agent_id}/dependent-agents)
+- [X] Get Agent Link (GET /v1/convai/agents/{agent_id}/link)
+
+### Conversational AI - Conversations
+- [X] List Conversations (GET /v1/convai/conversations)
+- [X] Get Conversation (GET /v1/convai/conversations/{conversation_id})
+- [X] Get Conversation Audio (GET /v1/convai/conversations/{conversation_id}/audio)
+- [X] Delete Conversation (DELETE /v1/convai/conversations/{conversation_id})
+- [X] Get Conversation Token (GET /v1/convai/conversations/{conversation_id}/conversations-token)
+- [X] Get Signed URL (GET /v1/convai/conversations/{conversation_id}/get-signed-url)
+- [X] Send Conversation Feedback (POST /v1/convai/conversations/{conversation_id}/feedback)
+
+### Conversational AI - Tools
+- [X] List Tools (GET /v1/convai/tools)
+- [X] Get Tool (GET /v1/convai/tools/{tool_id})
+- [X] Create Tool (POST /v1/convai/tools)
+- [X] Update Tool (PATCH /v1/convai/tools/{tool_id})
+- [X] Delete Tool (DELETE /v1/convai/tools/{tool_id})
+- [X] Get Tool Dependent Agents (GET /v1/convai/tools/{tool_id}/dependent-agents)
+
+### Conversational AI - Knowledge Base
+- [X] Get Knowledge Base Dependent Agents (GET /v1/convai/knowledge-base/{documentation_id}/dependent-agents)
+- [X] Get Knowledge Base Size (GET /v1/convai/agent/{agent_id}/knowledge-base/size)
+- [X] Get Knowledge Base Summaries (GET /v1/convai/knowledge-base/summaries)
+
+### Conversational AI - Knowledge Base Documents
+- [X] List Knowledge Base Documents (GET /v1/convai/knowledge-base)
+- [X] Delete Knowledge Base Document (DELETE /v1/convai/knowledge-base/{documentation_id})
+- [X] Get Knowledge Base Document (GET /v1/convai/knowledge-base/{documentation_id})
+- [X] Update Knowledge Base Document (PATCH /v1/convai/knowledge-base/{documentation_id})
+- [X] Create Knowledge Base Document from URL (POST /v1/convai/knowledge-base/url)
+- [X] Create Knowledge Base Document from Text (POST /v1/convai/knowledge-base/text)
+- [X] Create Knowledge Base Document from File (POST /v1/convai/knowledge-base/file)
+- [X] Get Document Content (GET /v1/convai/knowledge-base/{documentation_id}/content)
+- [X] Get Document Chunk (GET /v1/convai/knowledge-base/{documentation_id}/chunk/{chunk_id})
+
+### Conversational AI - Knowledge Base RAG Indexing
+- [X] Compute RAG Index (POST /v1/convai/knowledge-base/{documentation_id}/rag-index)
+- [X] Get RAG Index (GET /v1/convai/knowledge-base/{documentation_id}/rag-index)
+- [X] Compute RAG Index Batch (POST /v1/convai/knowledge-base/rag-index)
+- [X] Get RAG Index Overview (GET /v1/convai/knowledge-base/rag-index)
+- [X] Delete RAG Index (DELETE /v1/convai/knowledge-base/{documentation_id}/rag-index/{rag_index_id})
 
 ## Installation
 ```bash

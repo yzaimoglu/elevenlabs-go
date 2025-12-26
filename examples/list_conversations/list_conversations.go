@@ -1,12 +1,12 @@
-package examples
+package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/k0kubun/pp/v3"
 	"github.com/yzaimoglu/elevenlabs-go/elevenlabs"
 )
 
@@ -20,14 +20,13 @@ func main() {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	// Use a method that calls the API (Listing all Conversational AI agents here)
-	agents, err := client.ListAgents(context.Background(),
-		elevenlabs.NewListAgentsReq(nil, elevenlabs.Ptr(2), nil))
+	// List conversations with a minimum call duration of 300 seconds
+	resp, err := client.ListConversations(context.Background(), &elevenlabs.ListConversationsReq{
+		CallDurationMinSecs: elevenlabs.Ptr(300),
+	})
 	if err != nil {
-		log.Fatalf("Error fetching agents: %v", err)
+		panic(err)
 	}
 
-	for _, a := range agents.Agents {
-		fmt.Printf("Agent Name: %s (ID: %s)\n", a.Name, a.AgentId)
-	}
+	pp.Println(resp)
 }

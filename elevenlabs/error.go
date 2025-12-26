@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-// Error an error type containing the http response from zendesk
-type Error struct {
+// ElevenlabsError an error type containing the http response from zendesk
+type ElevenlabsError struct {
 	body []byte
 	resp *http.Response
 }
@@ -16,15 +16,15 @@ type Error struct {
 // NewError is a function to initialize the Error type. This function will be useful
 // for unit testing and mocking purposes in the client side
 // to test their behavior by the API response.
-func NewError(body []byte, resp *http.Response) Error {
-	return Error{
+func NewError(statusCode int, body []byte, resp *http.Response) ElevenlabsError {
+	return ElevenlabsError{
 		body: body,
 		resp: resp,
 	}
 }
 
 // Error the error string for this error
-func (e Error) Error() string {
+func (e ElevenlabsError) Error() string {
 	msg := string(e.body)
 	if msg == "" {
 		msg = http.StatusText(e.Status())
@@ -34,23 +34,23 @@ func (e Error) Error() string {
 }
 
 // Body is the Body of the HTTP response
-func (e Error) Body() io.ReadCloser {
+func (e ElevenlabsError) Body() io.ReadCloser {
 	return io.NopCloser(bytes.NewBuffer(e.body))
 }
 
 // Headers the HTTP headers returned from zendesk
-func (e Error) Headers() http.Header {
+func (e ElevenlabsError) Headers() http.Header {
 	return e.resp.Header
 }
 
 // Status the HTTP status code returned from zendesk
-func (e Error) Status() int {
+func (e ElevenlabsError) Status() int {
 	return e.resp.StatusCode
 }
 
 // OptionsError is an error type for invalid option argument.
 type OptionsError struct {
-	opts interface{}
+	opts any
 }
 
 func (e *OptionsError) Error() string {

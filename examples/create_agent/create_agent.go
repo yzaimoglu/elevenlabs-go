@@ -15,14 +15,14 @@ func main() {
 
 	// Create a new ElevenLabs API client
 	// The Environment can either be EnvironmentProduction, EnvironmentProductionUS, EnvironmentProductionEU or EnvironmentProductionIndia
-	client, err := elevenlabs.NewClient(os.Getenv("ELEVENLABS_API_KEY"), elevenlabs.EnvironmentProduction)
+	client, err := elevenlabs.NewClient(os.Getenv("ELEVENLABS_API_KEY"), elevenlabs.EnvironmentProductionEU)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
 	// Create a new agent by specifying some parameters
 	resp, err := client.CreateAgent(context.Background(), elevenlabs.NewCreateAgentReq(
-		&elevenlabs.ConversationConfig{
+		elevenlabs.ConversationConfig{
 			Agent: &elevenlabs.ConversationConfigAgent{
 				FirstMessage: elevenlabs.Ptr("Hello, this is an example agent created with the Go API Client."),
 			},
@@ -35,6 +35,7 @@ func main() {
 				RecordVoice:       elevenlabs.Ptr(false),
 			},
 		},
+		nil, // workflow
 		elevenlabs.Ptr("Go API Client Example Agent"), nil))
 	if err != nil {
 		panic(err)

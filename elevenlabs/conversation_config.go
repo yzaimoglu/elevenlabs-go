@@ -10,15 +10,19 @@ type ConversationConfig struct {
 }
 
 type ConversationConfigAgent struct {
-	FirstMessage     *string                `json:"first_message,omitempty"`
-	Language         *string                `json:"language,omitempty"`
-	DynamicVariables *AgentDynamicVariables `json:"dynamic_variables,omitempty"`
-	Prompt           *AgentPrompt           `json:"prompt,omitempty"`
+	FirstMessage                     *string                `json:"first_message,omitempty"`
+	Language                         *string                `json:"language,omitempty"`
+	HinglishMode                     *bool                  `json:"hinglish_mode,omitempty"`
+	DynamicVariables                 *AgentDynamicVariables `json:"dynamic_variables,omitempty"`
+	DisableFirstMessageInterruptions *bool                  `json:"disable_first_message_interruptions,omitempty"`
+	Prompt                           *AgentPrompt           `json:"prompt,omitempty"`
 }
 
 type AgentPrompt struct {
 	Prompt                   *string                    `json:"prompt"`
 	LLM                      *AgentPromptLLM            `json:"llm,omitempty"`
+	ReasoningEffort          *LLMReasoningEffort        `json:"reasoning_effort,omitempty"`
+	ThinkingBudget           *int                       `json:"thinking_budget,omitempty"`
 	Temperature              *float32                   `json:"temperature,omitempty"`
 	MaxTokens                *int                       `json:"max_tokens,omitempty"`
 	ToolIds                  []string                   `json:"tool_ids,omitempty"`
@@ -30,6 +34,8 @@ type AgentPrompt struct {
 	IgnoreDefaultPersonality *bool                      `json:"ignore_default_personality,omitempty"`
 	RAG                      *AgentPromptRAG            `json:"rag,omitempty"`
 	Timezone                 *string                    `json:"timezone,omitempty"`
+	BackupLLMConfig          *BackupLLMConfig           `json:"backup_llm_config,omitempty"`
+	Tools                    []AgentTool                `json:"tools,omitempty"`
 }
 
 type AgentPromptRAG struct {
@@ -225,36 +231,48 @@ const (
 type AgentPromptLLM string
 
 const (
-	GPT4oMini         AgentPromptLLM = "gpt-4o-mini"
-	GPT4o             AgentPromptLLM = "gpt-4o"
-	GPT4              AgentPromptLLM = "gpt-4"
-	GPT4Turbo         AgentPromptLLM = "gpt-4-turbo"
-	GPT41             AgentPromptLLM = "gpt-4.1"
-	GPT41Mini         AgentPromptLLM = "gpt-4.1-mini"
-	GPT41Nano         AgentPromptLLM = "gpt-4.1-nano"
-	GPT5              AgentPromptLLM = "gpt-5"
-	GPT5Mini          AgentPromptLLM = "gpt-5-mini"
-	GPT5Nano          AgentPromptLLM = "gpt-5-nano"
-	GPT35Turbo        AgentPromptLLM = "gpt-3.5-turbo"
-	Gemini15Pro       AgentPromptLLM = "gemini-1.5-pro"
-	Gemini15Flash     AgentPromptLLM = "gemini-1.5-flash"
-	Gemini20Flash     AgentPromptLLM = "gemini-2.0-flash"
-	Gemini20FlashLite AgentPromptLLM = "gemini-2.0-flash-lite"
-	Gemini25FlashLite AgentPromptLLM = "gemini-2.5-flash-lite"
-	Gemini25Flash     AgentPromptLLM = "gemini-2.5-flash"
-	ClaudeSonnet4     AgentPromptLLM = "claude-sonnet-4"
-	Claude37Sonnet    AgentPromptLLM = "claude-3-7-sonnet"
-	Claude35Sonnet    AgentPromptLLM = "claude-3-5-sonnet"
-	Claude35SonnetV1  AgentPromptLLM = "claude-3-5-sonnet-v1"
-	Claude3Haiku      AgentPromptLLM = "claude-3-haiku"
-	GrokBeta          AgentPromptLLM = "grok-beta"
-	CustomLLM         AgentPromptLLM = "custom-llm"
-	Qwen34B           AgentPromptLLM = "qwen3-4b"
-	Qwen330BA3B       AgentPromptLLM = "qwen3-30b-a3b"
-	WattTool8B        AgentPromptLLM = "watt-tool-8b"
-	WattTool70B       AgentPromptLLM = "watt-tool-70b"
+	GPT4oMini           AgentPromptLLM = "gpt-4o-mini"
+	GPT4o               AgentPromptLLM = "gpt-4o"
+	GPT4                AgentPromptLLM = "gpt-4"
+	GPT4Turbo           AgentPromptLLM = "gpt-4-turbo"
+	GPT41               AgentPromptLLM = "gpt-4.1"
+	GPT41Mini           AgentPromptLLM = "gpt-4.1-mini"
+	GPT41Nano           AgentPromptLLM = "gpt-4.1-nano"
+	GPT5                AgentPromptLLM = "gpt-5"
+	GPT51               AgentPromptLLM = "gpt-5.1"
+	GPT52               AgentPromptLLM = "gpt-5.2"
+	GPT52ChatLatest     AgentPromptLLM = "gpt-5.2-chat-latest"
+	GPT5Mini            AgentPromptLLM = "gpt-5-mini"
+	GPT5Nano            AgentPromptLLM = "gpt-5-nano"
+	GPT35Turbo          AgentPromptLLM = "gpt-3.5-turbo"
+	Gemini15Pro         AgentPromptLLM = "gemini-1.5-pro"
+	Gemini15Flash       AgentPromptLLM = "gemini-1.5-flash"
+	Gemini20Flash       AgentPromptLLM = "gemini-2.0-flash"
+	Gemini20FlashLite   AgentPromptLLM = "gemini-2.0-flash-lite"
+	Gemini25FlashLite   AgentPromptLLM = "gemini-2.5-flash-lite"
+	Gemini25Flash       AgentPromptLLM = "gemini-2.5-flash"
+	Gemini3ProPreview   AgentPromptLLM = "gemini-3-pro-preview"
+	Gemini3FlashPreview AgentPromptLLM = "gemini-3-flash-preview"
+	ClaudeSonnet45      AgentPromptLLM = "claude-sonnet-4-5"
+	ClaudeSonnet4       AgentPromptLLM = "claude-sonnet-4"
+	ClaudeHaiku45       AgentPromptLLM = "claude-haiku-4-5"
+	Claude37Sonnet      AgentPromptLLM = "claude-3-7-sonnet"
+	Claude35Sonnet      AgentPromptLLM = "claude-3-5-sonnet"
+	Claude35SonnetV1    AgentPromptLLM = "claude-3-5-sonnet-v1"
+	Claude3Haiku        AgentPromptLLM = "claude-3-haiku"
+	GrokBeta            AgentPromptLLM = "grok-beta"
+	CustomLLM           AgentPromptLLM = "custom-llm"
+	Qwen34B             AgentPromptLLM = "qwen3-4b"
+	Qwen330BA3B         AgentPromptLLM = "qwen3-30b-a3b"
+	GPTOss20B           AgentPromptLLM = "gpt-oss-20b"
+	GPTOss120B          AgentPromptLLM = "gpt-oss-120b"
+	GLM45AirFP8         AgentPromptLLM = "glm-45-air-fp8"
+	WattTool8B          AgentPromptLLM = "watt-tool-8b"
+	WattTool70B         AgentPromptLLM = "watt-tool-70b"
 
 	// dated variants
+	Gemini25FlashPreview0925     AgentPromptLLM = "gemini-2.5-flash-preview-09-2025"
+	Gemini25FlashLitePreview0925 AgentPromptLLM = "gemini-2.5-flash-lite-preview-09-2025"
 	Gemini25FlashPreview0520     AgentPromptLLM = "gemini-2.5-flash-preview-05-20"
 	Gemini25FlashPreview0417     AgentPromptLLM = "gemini-2.5-flash-preview-04-17"
 	Gemini25FlashLitePreview0617 AgentPromptLLM = "gemini-2.5-flash-lite-preview-06-17"
@@ -265,10 +283,14 @@ const (
 	Gemini15Pro002               AgentPromptLLM = "gemini-1.5-pro-002"
 	Gemini15Pro001               AgentPromptLLM = "gemini-1.5-pro-001"
 	ClaudeSonnet4_20250514       AgentPromptLLM = "claude-sonnet-4@20250514"
+	ClaudeSonnet45_20250929      AgentPromptLLM = "claude-sonnet-4-5@20250929"
+	ClaudeHaiku45_20251001       AgentPromptLLM = "claude-haiku-4-5@20251001"
 	Claude37Sonnet_20250219      AgentPromptLLM = "claude-3-7-sonnet@20250219"
 	Claude35Sonnet_20240620      AgentPromptLLM = "claude-3-5-sonnet@20240620"
 	Claude35SonnetV2_20241022    AgentPromptLLM = "claude-3-5-sonnet-v2@20241022"
 	Claude3Haiku_20240307        AgentPromptLLM = "claude-3-haiku@20240307"
+	GPT52_20251211               AgentPromptLLM = "gpt-5.2-2025-12-11"
+	GPT51_20251113               AgentPromptLLM = "gpt-5.1-2025-11-13"
 	GPT5_20250807                AgentPromptLLM = "gpt-5-2025-08-07"
 	GPT5Mini_20250807            AgentPromptLLM = "gpt-5-mini-2025-08-07"
 	GPT5Nano_20250807            AgentPromptLLM = "gpt-5-nano-2025-08-07"
@@ -329,30 +351,40 @@ const (
 )
 
 type ConversationConfigTurn struct {
-	TurnTimeout           *float32  `json:"turn_timeout,omitempty"`
-	SilenceEndCallTimeout *float32  `json:"silence_end_call_timeout,omitempty"`
-	Mode                  *TurnMode `json:"mode,omitempty"`
+	TurnTimeout           *float32               `json:"turn_timeout,omitempty"`
+	InitialWaitTime       *float32               `json:"initial_wait_time,omitempty"`
+	SilenceEndCallTimeout *float32               `json:"silence_end_call_timeout,omitempty"`
+	SoftTimeoutConfig     *SoftTimeoutConfig     `json:"soft_timeout_config,omitempty"`
+	TurnEagerness         *TurnEagerness         `json:"turn_eagerness,omitempty"`
+	Mode                  *TurnMode              `json:"mode,omitempty"`
+}
+
+type SoftTimeoutConfig struct {
+	TimeoutSeconds *float64 `json:"timeout_seconds,omitempty"`
+	Message        *string  `json:"message,omitempty"`
 }
 
 type ConversationConfigTTS struct {
 	ModelId                          *TTSModelId                       `json:"model_id,omitempty"`
-	Voice                            *string                           `json:"voice,omitempty"`
+	VoiceId                          *string                           `json:"voice_id,omitempty"`
 	SupportedVoices                  []SupportedVoice                  `json:"supported_voices,omitempty"`
 	AgentOutputAudioFormat           *AudioFormat                      `json:"agent_output_audio_format,omitempty"`
 	OptimizeStreamingLatency         *OptimizeStreamingLatency         `json:"optimize_streaming_latency,omitempty"`
 	Stability                        *float32                          `json:"stability,omitempty"`
 	Speed                            *float32                          `json:"speed,omitempty"`
 	SimilarityBoost                  *float32                          `json:"similarity_boost,omitempty"`
-	PronounciationDictionaryLocators []PronounciationDictionaryLocator `json:"pronounciation_dictionary_locators,omitempty"`
+	TextNormalisationType            *TextNormalisationType            `json:"text_normalisation_type,omitempty"`
+	PronounciationDictionaryLocators []PronounciationDictionaryLocator `json:"pronunciation_dictionary_locators,omitempty"`
 }
 
 type TTSModelId string
 
 const (
-	TTSModelIdElevenTurboV2   TTSModelId = "eleven_turbo_v2"
-	TTSModelIdElevenTurboV2_5 TTSModelId = "eleven_turbo_v2_5"
-	TTSModelIdElevenFlashV2   TTSModelId = "eleven_flash_v2"
-	TTSModelIdElevenFlashV2_5 TTSModelId = "eleven_flash_v2_5"
+	TTSModelIdElevenTurboV2        TTSModelId = "eleven_turbo_v2"
+	TTSModelIdElevenTurboV2_5      TTSModelId = "eleven_turbo_v2_5"
+	TTSModelIdElevenFlashV2        TTSModelId = "eleven_flash_v2"
+	TTSModelIdElevenFlashV2_5      TTSModelId = "eleven_flash_v2_5"
+	TTSModelIdElevenMultilingualV2 TTSModelId = "eleven_multilingual_v2"
 )
 
 type SupportedVoice struct {

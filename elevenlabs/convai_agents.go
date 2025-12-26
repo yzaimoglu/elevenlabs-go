@@ -25,16 +25,18 @@ type RespAgentMetadata struct {
 }
 
 type CreateAgentReq struct {
-	ConversationConfig *ConversationConfig `json:"conversation_config,omitempty"`
-	PlatformSettings   *PlatformSettings   `json:"platform_settings,omitempty"`
-	Name               *string             `json:"name,omitempty"`
-	Tags               []string            `json:"tags,omitempty"`
+	ConversationConfig ConversationConfig `json:"conversation_config"`
+	PlatformSettings   *PlatformSettings  `json:"platform_settings,omitempty"`
+	Workflow           *AgentWorkflow     `json:"workflow,omitempty"`
+	Name               *string            `json:"name,omitempty"`
+	Tags               []string           `json:"tags,omitempty"`
 }
 
-func NewCreateAgentReq(conversationConfig *ConversationConfig, platformSettings *PlatformSettings, name *string, tags []string) *CreateAgentReq {
+func NewCreateAgentReq(conversationConfig ConversationConfig, platformSettings *PlatformSettings, workflow *AgentWorkflow, name *string, tags []string) *CreateAgentReq {
 	return &CreateAgentReq{
 		ConversationConfig: conversationConfig,
 		PlatformSettings:   platformSettings,
+		Workflow:           workflow,
 		Name:               name,
 		Tags:               tags,
 	}
@@ -105,10 +107,28 @@ func (c *Client) GetAgent(ctx context.Context, req *GetAgentReq) (GetAgentResp, 
 }
 
 type ListAgentsReq struct {
-	Cursor   *string `url:"cursor,omitempty"`
-	PageSize int     `url:"page_size,omitempty"`
-	Search   *string `url:"search,omitempty"`
+	Cursor             *string              `url:"cursor,omitempty"`
+	PageSize           int                  `url:"page_size,omitempty"`
+	Search             *string              `url:"search,omitempty"`
+	Archived           *bool                `url:"archived,omitempty"`
+	ShowOnlyOwnedAgents *bool               `url:"show_only_owned_agents,omitempty"`
+	SortDirection      *ListAgentsSortDirection `url:"sort_direction,omitempty"`
+	SortBy             *ListAgentsSortBy    `url:"sort_by,omitempty"`
 }
+
+type ListAgentsSortDirection string
+
+const (
+	ListAgentsSortDirectionAsc  ListAgentsSortDirection = "asc"
+	ListAgentsSortDirectionDesc ListAgentsSortDirection = "desc"
+)
+
+type ListAgentsSortBy string
+
+const (
+	ListAgentsSortByName      ListAgentsSortBy = "name"
+	ListAgentsSortByCreatedAt ListAgentsSortBy = "created_at"
+)
 
 func NewListAgentsReq(cursor *string, pageSize *int, search *string) *ListAgentsReq {
 	r := &ListAgentsReq{
@@ -150,6 +170,7 @@ type ListAgentsRespAgent struct {
 	CreatedAtUnixSecs    int64      `json:"created_at_unix_secs"`
 	AccessInfo           AccessInfo `json:"access_info"`
 	LastCallTimeUnixSecs int64      `json:"last_call_time_unix_secs"`
+	Archived             bool       `json:"archived"`
 }
 
 type ListAgentsResp struct {
@@ -306,6 +327,7 @@ type GetAgentLinkRespToken struct {
 	ExpirationTimeUnixSecs *int64        `json:"expiration_time_unix_secs,omitempty"`
 	ConversationId         *string       `json:"conversation_id,omitempty"`
 	Purpose                *TokenPurpose `json:"purpose,omitempty"`
+	TokenRequesterUserId   *string       `json:"token_requester_user_id,omitempty"`
 }
 
 // GetAgentLink gets the current link used to share the agent with others by agent id.
@@ -377,7 +399,7 @@ func (c *Client) StreamSimulateConversation(ctx context.Context, req *SimulateCo
 		return SimulateConversationResp{}, errors.New("request is nil")
 	}
 
-	body, err := c.post(ctx, "/convai/agents/"+req.AgentId+"/simulate-conversation", req)
+	body, err := c.post(ctx, "/convai/agents/"+req.AgentId+"/simulate-conversation/stream", req)
 	if err != nil {
 		return SimulateConversationResp{}, err
 	}

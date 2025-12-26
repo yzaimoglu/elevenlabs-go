@@ -108,7 +108,7 @@ func (c *Client) get(ctx context.Context, path string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, Error{
+		return nil, ElevenlabsError{
 			body: body,
 			resp: resp,
 		}
@@ -117,7 +117,7 @@ func (c *Client) get(ctx context.Context, path string) ([]byte, error) {
 }
 
 // post send data to API and returns response body as []bytes
-func (c *Client) post(ctx context.Context, path string, data interface{}) ([]byte, error) {
+func (c *Client) post(ctx context.Context, path string, data any) ([]byte, error) {
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (c *Client) post(ctx context.Context, path string, data interface{}) ([]byt
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, Error{
+		return nil, ElevenlabsError{
 			body: body,
 			resp: resp,
 		}
@@ -152,7 +152,7 @@ func (c *Client) post(ctx context.Context, path string, data interface{}) ([]byt
 }
 
 // put sends data to API and returns response body as []bytes
-func (c *Client) put(ctx context.Context, path string, data interface{}) ([]byte, error) {
+func (c *Client) put(ctx context.Context, path string, data any) ([]byte, error) {
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -177,7 +177,7 @@ func (c *Client) put(ctx context.Context, path string, data interface{}) ([]byte
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, Error{
+		return nil, ElevenlabsError{
 			body: body,
 			resp: resp,
 		}
@@ -187,7 +187,7 @@ func (c *Client) put(ctx context.Context, path string, data interface{}) ([]byte
 }
 
 // patch sends data to API and returns response body as []bytes
-func (c *Client) patch(ctx context.Context, path string, data interface{}) ([]byte, error) {
+func (c *Client) patch(ctx context.Context, path string, data any) ([]byte, error) {
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -213,7 +213,7 @@ func (c *Client) patch(ctx context.Context, path string, data interface{}) ([]by
 
 	// NOTE: some webhook mutation APIs return status No Content.
 	if resp.StatusCode != http.StatusOK {
-		return nil, Error{
+		return nil, ElevenlabsError{
 			body: body,
 			resp: resp,
 		}
@@ -243,7 +243,7 @@ func (c *Client) delete(ctx context.Context, path string) error {
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		return Error{
+		return ElevenlabsError{
 			body: body,
 			resp: resp,
 		}
@@ -291,12 +291,12 @@ func (c *Client) Get(ctx context.Context, path string) ([]byte, error) {
 }
 
 // Post allows users to send requests not yet implemented
-func (c *Client) Post(ctx context.Context, path string, data interface{}) ([]byte, error) {
+func (c *Client) Post(ctx context.Context, path string, data any) ([]byte, error) {
 	return c.post(ctx, path, data)
 }
 
 // Put allows users to send requests not yet implemented
-func (c *Client) Put(ctx context.Context, path string, data interface{}) ([]byte, error) {
+func (c *Client) Put(ctx context.Context, path string, data any) ([]byte, error) {
 	return c.put(ctx, path, data)
 }
 
