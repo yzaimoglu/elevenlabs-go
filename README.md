@@ -216,3 +216,4 @@ Refer to the code and GoDoc for detailed usage examples.
 ## Acknowledgments
 - This project is heavily inspired by the structure of the [unofficial Zendesk Go Client](https://github.com/nukosuke/go-zendesk) by nukosuke.
 - Gopher created with [Gopherize](https://gopherize.me/)
+- [Claude Code](https://github.com/anthropics/claude-code) for easing the process of porting over the client methods from the official Elevenlabs API documentation
