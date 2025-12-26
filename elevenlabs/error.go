@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-// ElevenlabsError an error type containing the http response from zendesk
+// ElevenlabsError an error type containing the http response from elevenlabs
 type ElevenlabsError struct {
 	body []byte
 	resp *http.Response
@@ -38,12 +38,12 @@ func (e ElevenlabsError) Body() io.ReadCloser {
 	return io.NopCloser(bytes.NewBuffer(e.body))
 }
 
-// Headers the HTTP headers returned from zendesk
+// Headers the HTTP headers returned from elevenlabs
 func (e ElevenlabsError) Headers() http.Header {
 	return e.resp.Header
 }
 
-// Status the HTTP status code returned from zendesk
+// Status the HTTP status code returned from elevenlabs
 func (e ElevenlabsError) Status() int {
 	return e.resp.StatusCode
 }

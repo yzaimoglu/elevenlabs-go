@@ -1,6 +1,6 @@
 package elevenlabs
 
-// API an interface containing all of the zendesk client methods
+// API an interface containing all of the elevenlabs client methods
 type API interface {
 	BaseAPI
 	ConvaiAPI

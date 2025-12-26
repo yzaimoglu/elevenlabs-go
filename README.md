@@ -9,6 +9,8 @@
   <p align="center">
     Unofficial Go Client for the ElevenLabs API
     <br/>
+    (implements cli version <strong>v2.15.0</strong>)
+    <br/>
     <br/>
     <a href="https://github.com/yzaimoglu/elevenlabs-go/issues">Report Bug</a>
     .
@@ -16,12 +18,12 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/yzaimoglu/elevenlabs-go?color=dark-green) ![Issues](https://img.shields.io/github/issues/yzaimoglu/elevenlabs-go) ![License](https://img.shields.io/github/license/yzaimoglu/elevenlabs-go) 
+![Contributors](https://img.shields.io/github/contributors/yzaimoglu/elevenlabs-go?color=dark-green) ![Issues](https://img.shields.io/github/issues/yzaimoglu/elevenlabs-go) ![License](https://img.shields.io/github/license/yzaimoglu/elevenlabs-go)
 
 A Go client for interacting with the [ElevenLabs API](https://api.elevenlabs.io/), providing easy-to-use methods for the endpoints for Administration, Conversational AI and advanced features like TTS, STT and other ElevenLabs features.
 
 ## Features
-This project is currently work in progress and not all of the endpoints are supported.
+This project has all of the endpoints for the Agent Platform from v2.15.0 of the Elevenlabs API documentation implemented.
 
 ### Conversational AI - Agents
 - [X] Create Agent (POST /v1/convai/agents/create)
@@ -30,18 +32,19 @@ This project is currently work in progress and not all of the endpoints are supp
 - [X] Update Agent (PATCH /v1/convai/agents/{agent_id})
 - [X] Delete Agent (DELETE /v1/convai/agents/{agent_id})
 - [X] Duplicate Agent (POST /v1/convai/agents/{agent_id}/duplicate)
-- [X] Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate)
-- [X] Stream Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate-conversation/stream)
-- [X] Get Agent Dependent Agents (GET /v1/convai/agents/{agent_id}/dependent-agents)
 - [X] Get Agent Link (GET /v1/convai/agents/{agent_id}/link)
+- [X] Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate-conversation)
+- [X] Stream Simulate Conversation (POST /v1/convai/agents/{agent_id}/simulate-conversation/stream)
+- [X] Run Tests on Agent (POST /v1/convai/agents/{agent_id}/run-tests)
+- [X] Calculate Agent LLM Usage (POST /v1/convai/agent/{agent_id}/llm-usage/calculate)
 
 ### Conversational AI - Conversations
 - [X] List Conversations (GET /v1/convai/conversations)
 - [X] Get Conversation (GET /v1/convai/conversations/{conversation_id})
 - [X] Get Conversation Audio (GET /v1/convai/conversations/{conversation_id}/audio)
 - [X] Delete Conversation (DELETE /v1/convai/conversations/{conversation_id})
-- [X] Get Conversation Token (GET /v1/convai/conversations/{conversation_id}/conversations-token)
-- [X] Get Signed URL (GET /v1/convai/conversations/{conversation_id}/get-signed-url)
+- [X] Get Conversation Token (GET /v1/convai/conversation/token)
+- [X] Get Signed URL (GET /v1/convai/conversation/get-signed-url)
 - [X] Send Conversation Feedback (POST /v1/convai/conversations/{conversation_id}/feedback)
 
 ### Conversational AI - Tools
@@ -74,6 +77,88 @@ This project is currently work in progress and not all of the endpoints are supp
 - [X] Compute RAG Index Batch (POST /v1/convai/knowledge-base/rag-index)
 - [X] Get RAG Index Overview (GET /v1/convai/knowledge-base/rag-index)
 - [X] Delete RAG Index (DELETE /v1/convai/knowledge-base/{documentation_id}/rag-index/{rag_index_id})
+
+### Conversational AI - Phone Numbers
+- [X] List Phone Numbers (GET /v1/convai/phone-numbers)
+- [X] Get Phone Number (GET /v1/convai/phone-numbers/{phone_number_id})
+- [X] Create Phone Number (POST /v1/convai/phone-numbers)
+- [X] Update Phone Number (PATCH /v1/convai/phone-numbers/{phone_number_id})
+- [X] Delete Phone Number (DELETE /v1/convai/phone-numbers/{phone_number_id})
+
+### Conversational AI - Batch Calling
+- [X] Submit Batch Call (POST /v1/convai/batch-calling/submit)
+- [X] Get Batch Call (GET /v1/convai/batch-calling/{batch_id})
+- [X] List Batch Calls (GET /v1/convai/batch-calling/workspace)
+- [X] Retry Batch Call (POST /v1/convai/batch-calling/{batch_id}/retry)
+- [X] Cancel Batch Call (POST /v1/convai/batch-calling/{batch_id}/cancel)
+
+### Conversational AI - Twilio
+- [X] Register Twilio Call (POST /v1/convai/twilio/register-call)
+- [X] Twilio Outbound Call (POST /v1/convai/twilio/outbound-call)
+
+### Conversational AI - SIP Trunk
+- [X] SIP Trunk Outbound Call (POST /v1/convai/sip-trunk/outbound-call)
+
+### Conversational AI - WhatsApp
+- [X] WhatsApp Outbound Call (POST /v1/convai/whatsapp/outbound-call)
+
+### Conversational AI - WhatsApp Accounts
+- [X] List WhatsApp Accounts (GET /v1/convai/whatsapp-accounts)
+- [X] Get WhatsApp Account (GET /v1/convai/whatsapp-accounts/{phone_number_id})
+- [X] Import WhatsApp Account (POST /v1/convai/whatsapp-accounts)
+- [X] Update WhatsApp Account (PATCH /v1/convai/whatsapp-accounts/{phone_number_id})
+- [X] Delete WhatsApp Account (DELETE /v1/convai/whatsapp-accounts/{phone_number_id})
+
+### Conversational AI - Analytics
+- [X] Get Live Count (GET /v1/convai/analytics/live-count)
+
+### Conversational AI - Widget
+- [X] Get Agent Widget (GET /v1/convai/agents/{agent_id}/widget)
+- [X] Post Agent Avatar (POST /v1/convai/agents/{agent_id}/avatar)
+
+### Conversational AI - Workspace Settings
+- [X] Get Settings (GET /v1/convai/settings)
+- [X] Update Settings (PATCH /v1/convai/settings)
+
+### Conversational AI - Tests
+- [X] List Tests (GET /v1/convai/agent-testing)
+- [X] Get Test (GET /v1/convai/agent-testing/{test_id})
+- [X] Create Test (POST /v1/convai/agent-testing/create)
+- [X] Update Test (PUT /v1/convai/agent-testing/{test_id})
+- [X] Delete Test (DELETE /v1/convai/agent-testing/{test_id})
+- [X] Get Test Summaries (POST /v1/convai/agent-testing/summaries)
+
+### Conversational AI - MCP Servers
+- [X] List MCP Servers (GET /v1/convai/mcp-servers)
+- [X] Get MCP Server (GET /v1/convai/mcp-servers/{mcp_server_id})
+- [X] Create MCP Server (POST /v1/convai/mcp-servers)
+- [X] Update MCP Server (PATCH /v1/convai/mcp-servers/{mcp_server_id})
+- [X] Delete MCP Server (DELETE /v1/convai/mcp-servers/{mcp_server_id})
+- [X] List MCP Server Tools (GET /v1/convai/mcp-servers/{mcp_server_id}/tools)
+
+### Conversational AI - MCP Tool Approvals
+- [X] Create Tool Approval (POST /v1/convai/mcp-servers/{mcp_server_id}/tool-approvals)
+- [X] Update Approval Policy (PATCH /v1/convai/mcp-servers/{mcp_server_id}/approval-policy)
+- [X] Delete Tool Approval (DELETE /v1/convai/mcp-servers/{mcp_server_id}/tool-approvals/{tool_name})
+
+### Conversational AI - MCP Tool Configuration
+- [X] Create Tool Config (POST /v1/convai/mcp-servers/{mcp_server_id}/tool-configs)
+- [X] Get Tool Config (GET /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name})
+- [X] Update Tool Config (PATCH /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name})
+- [X] Delete Tool Config (DELETE /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name})
+
+### Conversational AI - Workspace Secrets
+- [X] List Secrets (GET /v1/convai/secrets)
+- [X] Create Secret (POST /v1/convai/secrets)
+- [X] Update Secret (PATCH /v1/convai/secrets/{secret_id})
+- [X] Delete Secret (DELETE /v1/convai/secrets/{secret_id})
+
+### Conversational AI - Workspace Dashboard
+- [X] Get Dashboard (GET /v1/convai/settings/dashboard)
+- [X] Update Dashboard (PATCH /v1/convai/settings/dashboard)
+
+### Conversational AI - LLM Usage
+- [X] Calculate LLM Usage (POST /v1/convai/llm-usage/calculate)
 
 ## Installation
 ```bash
@@ -115,7 +200,7 @@ func main() {
 Full API documentation:
 - [Elevenlabs API Reference](https://elevenlabs.io/docs/api-reference/introduction)
 
-This client aims to be a 1:1 wrapper for the official ElevenLabs API endpoints.
+This client aims to be a 1:1 wrapper for the official ElevenLabs API Agent Platform endpoints.
 Refer to the code and GoDoc for detailed usage examples.
 
 ## Contributing

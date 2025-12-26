@@ -444,7 +444,7 @@ func (c *Client) CalculateExpectedLLMUsage(ctx context.Context, req *CalculateEx
 		return CalculateExpectedLLMUsageResp{}, errors.New("request is nil")
 	}
 
-	body, err := c.post(ctx, "/convai/agents/"+req.AgentId+"/llm-usage/calculate", req)
+	body, err := c.post(ctx, "/convai/agent/"+req.AgentId+"/llm-usage/calculate", req)
 	if err != nil {
 		return CalculateExpectedLLMUsageResp{}, err
 	}
