@@ -298,7 +298,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/phone-numbers"
 
-	payload := strings.NewReader("{\n  \"phone_number\": \"+14155552671\",\n  \"label\": \"Support Line - Twilio\",\n  \"sid\": \"AC1234567890abcdef1234567890abcdef\",\n  \"token\": \"a1b2c3d4e5f678901234567890abcdef\"\n}")
+	payload := strings.NewReader("{\n  \"phone_number\": \"+14155552671\",\n  \"label\": \"Support Line - Twilio\",\n  \"sid\": \"\",\n  \"token\": \"\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
